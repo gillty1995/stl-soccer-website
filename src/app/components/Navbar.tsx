@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useAdmin } from "@/context/AdminContext";
 
 const MotionLink = motion(Link);
@@ -12,6 +12,8 @@ const Navbar = () => {
   const { adminLoggedIn } = useAdmin();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileFieldsMenuOpen, setMobileFieldsMenuOpen] = useState(false);
 
   const linkVariants = {
     hover: {
@@ -20,7 +22,7 @@ const Navbar = () => {
     },
   };
 
-  // Close the dropdown when clicking outside of it
+  // Desktop "Fields" dropdown: close when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -41,19 +43,28 @@ const Navbar = () => {
     };
   }, [dropdownOpen]);
 
-  // Function to close dropdown when a link is clicked
+  // Function to close desktop dropdown when a link is clicked
   const handleDropdownLinkClick = () => {
     setDropdownOpen(false);
   };
 
+  // Handlers for mobile Fields submenu
+  const openMobileFieldsMenu = () => {
+    setMobileFieldsMenuOpen(true);
+  };
+
+  const closeMobileFieldsMenu = () => {
+    setMobileFieldsMenuOpen(false);
+  };
+
   return (
     <nav className="bg-white h-16 shadow-md relative">
-      {/* Logo positioned absolutely in the top-left corner */}
+      {/* Logo: centered on mobile, left-aligned on desktop */}
       <Link
         href="/"
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
+        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:left-4 md:translate-x-0 cursor-pointer"
       >
-        <div className="w-30 h-30 relative overflow-hidden ml-25">
+        <div className="w-30 h-30 relative overflow-hidden ml-0">
           <Image
             src="/images/logo4.png"
             alt="STL Mens Soccer Logo"
@@ -62,9 +73,11 @@ const Navbar = () => {
           />
         </div>
       </Link>
-      {/* Navigation Links aligned to the right */}
-      <div className="max-w-7xl mx-auto h-full flex justify-end items-center">
-        <div className="flex items-center space-x-8 pr-4">
+
+      {/* Desktop Navigation Links */}
+      <div className="hidden md:flex  mx-auto h-full justify-end items-center">
+        {/* max-w-7xl */}
+        <div className="flex items-center space-x-8 pr-4 mr-3">
           <MotionLink
             href="/rules"
             className="text-gray-800 hover:text-gray-600"
@@ -156,6 +169,199 @@ const Navbar = () => {
           </MotionLink>
         </div>
       </div>
+      {/* Hamburger Icon for Mobile */}
+      <div className="md:hidden absolute right-4 top-1/2 transform -translate-y-1/2">
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="text-gray-800 focus:outline-none"
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            className="fixed top-0 right-0 h-full bg-white shadow-lg z-20"
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "tween", duration: 0.3 }}
+            style={{ width: "60%" }} // covers only a small portion of the screen
+          >
+            <div className="p-4">
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-gray-800 text-xl underline mb-4 focus:outline-none"
+              >
+                Close
+              </button>
+              <ul className="space-y-4">
+                <li>
+                  <MotionLink
+                    href="/rules"
+                    className="text-gray-800 hover:text-gray-600"
+                    onClick={() => setMobileMenuOpen(false)}
+                    whileHover="hover"
+                    variants={linkVariants}
+                  >
+                    Rules
+                  </MotionLink>
+                </li>
+                <li>
+                  <button
+                    onClick={openMobileFieldsMenu}
+                    className="text-gray-800 hover:text-gray-600 focus:outline-none"
+                  >
+                    Fields
+                  </button>
+                </li>
+                <li>
+                  <MotionLink
+                    href={adminLoggedIn ? "/admin/schedules" : "/schedules"}
+                    className="text-gray-800 hover:text-gray-600"
+                    onClick={() => setMobileMenuOpen(false)}
+                    whileHover="hover"
+                    variants={linkVariants}
+                  >
+                    Schedules
+                  </MotionLink>
+                </li>
+                <li>
+                  <MotionLink
+                    href={adminLoggedIn ? "/admin/seasons" : "/seasons"}
+                    className="text-gray-800 hover:text-gray-600"
+                    onClick={() => setMobileMenuOpen(false)}
+                    whileHover="hover"
+                    variants={linkVariants}
+                  >
+                    Seasons
+                  </MotionLink>
+                </li>
+                <li>
+                  <MotionLink
+                    href="/contact"
+                    className="text-gray-800 hover:text-gray-600"
+                    onClick={() => setMobileMenuOpen(false)}
+                    whileHover="hover"
+                    variants={linkVariants}
+                  >
+                    Contact
+                  </MotionLink>
+                </li>
+              </ul>
+            </div>
+
+            {/* Mobile Fields Submenu */}
+            <AnimatePresence>
+              {mobileFieldsMenuOpen && (
+                <motion.div
+                  className="fixed top-0 right-0 h-full bg-white shadow-lg z-30"
+                  initial={{ x: "100%" }}
+                  animate={{ x: 0 }}
+                  exit={{ x: "100%" }}
+                  transition={{ type: "tween", duration: 0.3 }}
+                  style={{ width: "80%" }} // expands further to show the fields links
+                >
+                  <div className="p-4">
+                    <button
+                      onClick={closeMobileFieldsMenu}
+                      className="text-gray-800 text-xl underline mb-4 focus:outline-none"
+                    >
+                      Back
+                    </button>
+                    <ul className="space-y-4">
+                      <li>
+                        <MotionLink
+                          href="/fields/chesterfield"
+                          className="text-gray-800 hover:text-gray-600"
+                          onClick={() => {
+                            setMobileMenuOpen(false);
+                            closeMobileFieldsMenu();
+                          }}
+                          whileHover="hover"
+                          variants={linkVariants}
+                        >
+                          Chesterfield Field
+                        </MotionLink>
+                      </li>
+                      <li>
+                        <MotionLink
+                          href="/fields/ofallon"
+                          className="text-gray-800 hover:text-gray-600"
+                          onClick={() => {
+                            setMobileMenuOpen(false);
+                            closeMobileFieldsMenu();
+                          }}
+                          whileHover="hover"
+                          variants={linkVariants}
+                        >
+                          O'Fallon Field
+                        </MotionLink>
+                      </li>
+                      <li>
+                        <MotionLink
+                          href="/fields/loufusz"
+                          className="text-gray-800 hover:text-gray-600"
+                          onClick={() => {
+                            setMobileMenuOpen(false);
+                            closeMobileFieldsMenu();
+                          }}
+                          whileHover="hover"
+                          variants={linkVariants}
+                        >
+                          Lou Fusz Field
+                        </MotionLink>
+                      </li>
+                      <li>
+                        <MotionLink
+                          href="/fields/forestpark"
+                          className="text-gray-800 hover:text-gray-600"
+                          onClick={() => {
+                            setMobileMenuOpen(false);
+                            closeMobileFieldsMenu();
+                          }}
+                          whileHover="hover"
+                          variants={linkVariants}
+                        >
+                          Forest Park Field
+                        </MotionLink>
+                      </li>
+                      <li>
+                        <MotionLink
+                          href="/fields/fenton"
+                          className="text-gray-800 hover:text-gray-600"
+                          onClick={() => {
+                            setMobileMenuOpen(false);
+                            closeMobileFieldsMenu();
+                          }}
+                          whileHover="hover"
+                          variants={linkVariants}
+                        >
+                          Fenton Field
+                        </MotionLink>
+                      </li>
+                    </ul>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };

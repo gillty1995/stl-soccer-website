@@ -52,7 +52,7 @@ export default function Footer() {
             <Link
               href="https://www.linkedin.com/in/gillty/"
               target="_blank"
-              className="underline"
+              className="hover:text-blue-700 hover:underline transition ease-in-out"
             >
               Gill Hermelin
             </Link>{" "}
