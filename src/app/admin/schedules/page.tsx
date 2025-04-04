@@ -38,6 +38,7 @@ export default function AdminSchedules() {
         setMessage("Error: " + data.message);
       }
     } catch (err) {
+      console.error("Error saving schedule:", err);
       setMessage("Error saving schedule");
     }
     setLoading(false);

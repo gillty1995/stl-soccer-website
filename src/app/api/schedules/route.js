@@ -3,7 +3,7 @@ import path from "path";
 
 const dataFile = path.join(process.cwd(), "data", "schedules.txt");
 
-export async function GET(request) {
+export async function GET() {
   try {
     if (!fs.existsSync(dataFile)) {
       console.error("Data file does not exist.");

@@ -114,7 +114,7 @@ const Navbar = () => {
                   className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
                   whileHover={{ scale: 1.05 }}
                 >
-                  O'Fallon Field
+                  O&apos;Fallon Field
                 </MotionLink>
                 <MotionLink
                   href="/fields/loufusz"
@@ -309,7 +309,7 @@ const Navbar = () => {
                           whileHover="hover"
                           variants={linkVariants}
                         >
-                          O'Fallon Field
+                          O&apos;Fallon Field
                         </MotionLink>
                       </li>
                       <li>

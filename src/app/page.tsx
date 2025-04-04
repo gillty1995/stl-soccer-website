@@ -45,7 +45,7 @@ export default function Home() {
         >
           <motion.div variants={itemVariantLeft}>
             <h1 className="text-6xl md:text-7xl font-bold text-gray-800">
-              St. Louis Men's
+              St. Louis Men&apos;s
             </h1>
             <h1 className="text-6xl md:text-7xl font-bold text-gray-800">
               Soccer
@@ -55,8 +55,8 @@ export default function Home() {
             variants={itemVariantLeft}
             className="text-lg text-gray-700"
           >
-            Welcome to St. Louis Men's Soccer, a community-driven club committed
-            to excellence both on and off the field.
+            Welcome to St. Louis Men&apos;s Soccer, a community-driven club
+            committed to excellence both on and off the field.
           </motion.p>
           <motion.p
             variants={itemVariantLeft}

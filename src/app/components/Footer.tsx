@@ -56,7 +56,7 @@ export default function Footer() {
             >
               Gill Hermelin
             </Link>{" "}
-            | St. Louis Men's Soccer
+            | St. Louis Men&apos;s Soccer
           </span>
         </div>
         <div className="mt-4 md:mt-0">

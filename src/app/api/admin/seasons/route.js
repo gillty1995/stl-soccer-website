@@ -20,7 +20,7 @@ function writeSeasons(json) {
   fs.writeFileSync(dataFile, JSON.stringify(json, null, 2), "utf8");
 }
 
-export async function GET(request) {
+export async function GET() {
   try {
     const json = readSeasons();
     return new Response(JSON.stringify(json), { status: 200 });

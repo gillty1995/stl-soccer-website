@@ -13,7 +13,7 @@ export default function OfallonField() {
       {/* Page Title */}
       <div className="max-w-4xl mx-auto p-8">
         <h1 className="text-4xl font-bold text-gray-800 text-center mb-8">
-          O'Fallon Field
+          O&apos;Fallon Field
         </h1>
       </div>
       {/* Field Map Image */}
@@ -31,7 +31,7 @@ export default function OfallonField() {
       {/* Directions and Rainout Schedule */}
       <div className="max-w-4xl mx-auto p-8">
         <p className="text-lg text-gray-700 text-center mb-4">
-          <strong>Address:</strong> Sportspark Dr, O'Fallon, MO 63368
+          <strong>Address:</strong> Sportspark Dr, O&apos;Fallon, MO 63368
         </p>
         <div className="flex flex-row justify-center items-center space-x-4">
           <Link

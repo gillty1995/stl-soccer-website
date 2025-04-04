@@ -37,10 +37,10 @@ export default function Rules() {
         </p>
         <p className="text-lg text-gray-700 mb-4">
           <strong>NO SLIDE TACKLING.</strong> Sliding is allowed if it is not a
-          tackle. To clarify, if a slide is not to steal a ball at an opponent's
-          feet or win a 50-50 ball, and is not dangerous it is ok. Examples:
-          saving a ball from crossing the goal line or sideline or to score a
-          goal or make a pass. (if it is not a tackle)
+          tackle. To clarify, if a slide is not to steal a ball at an
+          opponent&apos;s feet or win a 50-50 ball, and is not dangerous it is
+          ok. Examples: saving a ball from crossing the goal line or sideline or
+          to score a goal or make a pass. (if it is not a tackle)
         </p>
         <p className="text-lg text-gray-700 mb-4">
           If a game is tied at the end of regulation, it is a tie.

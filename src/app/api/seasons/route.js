@@ -3,7 +3,7 @@ import path from "path";
 
 const dataFile = path.join(process.cwd(), "data", "seasons.json");
 
-export async function GET(request) {
+export async function GET() {
   try {
     if (!fs.existsSync(dataFile)) {
       return new Response(JSON.stringify({ seasons: [] }), { status: 200 });

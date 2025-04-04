@@ -3,7 +3,7 @@ import path from "path";
 
 const dataFile = path.join(process.cwd(), "data", "schedules.txt");
 
-export async function GET(request) {
+export async function GET() {
   console.log("=== API Route: /api/admin/schedules (GET) ===");
   console.log("Working directory:", process.cwd());
   console.log("Data file path:", dataFile);

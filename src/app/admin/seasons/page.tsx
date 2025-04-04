@@ -79,6 +79,7 @@ export default function AdminSeasonsEdit() {
           setMessage("Error: " + result.message);
         }
       } catch (err) {
+        console.error(err);
         setMessage("Error creating season");
       }
     } else {
@@ -99,6 +100,7 @@ export default function AdminSeasonsEdit() {
           setMessage("Error: " + result.message);
         }
       } catch (err) {
+        console.error("Error updating season:", err);
         setMessage("Error updating season");
       }
     }
@@ -132,6 +134,7 @@ export default function AdminSeasonsEdit() {
         setMessage("Error: " + result.message);
       }
     } catch (err) {
+      console.error("Error deleting season:", err);
       setMessage("Error deleting season");
     }
     setLoading(false);
