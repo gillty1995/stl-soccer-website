@@ -1,5 +1,7 @@
 **St. Louis Men’s Soccer Website**
 
+LIVE WEBSITE EXAMPLE: https://www.example-stlmenssoccer.hec.to/
+
 This project is a modern, responsive website built for a local soccer club using cutting-edge web technologies. It features a dynamic public-facing interface along with secure admin functionality that allows for easy editing and schedule updates.
 
 **Tech Stack Overview**
@@ -27,9 +29,10 @@ For simplicity, schedule and season data are stored in JSON files within the pro
 _Admin Functionality_
 
 A key feature of the website is the admin editing interface. Admin users (authenticated via a secure token stored in environment variables) can:
-• Log in through a dedicated admin login modal.
-• Create new seasons by entering a title and season details.
-• Update or delete existing season data directly through a dynamic admin interface.
-• View an up-to-date list of seasons, where new seasons are added dynamically.
+
+- Log in through a dedicated admin login modal.
+- Create new seasons by entering a title and season details.
+- Update or delete existing season data directly through a dynamic admin interface.
+- View an up-to-date list of seasons, where new seasons are added dynamically.
 
 This setup makes it easy for non-developer administrators to keep the website current without modifying the code.
