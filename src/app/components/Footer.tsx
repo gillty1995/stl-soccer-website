@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "./Modal";
 import { useAdmin } from "@/context/AdminContext";
 
@@ -9,7 +9,18 @@ export default function Footer() {
   const { adminLoggedIn, setAdminLoggedIn } = useAdmin();
   const [adminModalOpen, setAdminModalOpen] = useState(false);
 
-  // Share function: use navigator.share if available, else fallback to copying link.
+  // these two state hooks let us read what the user types
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  // on mount, check if there’s an adminToken saved
+  useEffect(() => {
+    const token =
+      typeof window !== "undefined" && localStorage.getItem("adminToken");
+    if (token) setAdminLoggedIn(true);
+  }, [setAdminLoggedIn]);
+
+  // share button logic untouched
   const handleShare = async () => {
     if (navigator.share) {
       try {
@@ -22,19 +33,33 @@ export default function Footer() {
         console.error("Error sharing:", error);
       }
     } else {
-      // Fallback: copy URL to clipboard
       navigator.clipboard.writeText(window.location.href);
       alert("Link copied to clipboard!");
     }
   };
 
-  // Handler for admin login form submission.
-  // In a real application, you’d validate credentials.
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  // new: POST to your login API
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Here we simply mark the admin as logged in.
-    setAdminLoggedIn(true);
-    setAdminModalOpen(false);
+    try {
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+      if (res.ok) {
+        const { token } = await res.json();
+        localStorage.setItem("adminToken", token);
+        setAdminLoggedIn(true);
+        setAdminModalOpen(false);
+      } else {
+        const { error } = await res.json();
+        alert(error || "Invalid credentials");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong. Try again.");
+    }
   };
 
   return (
@@ -62,14 +87,21 @@ export default function Footer() {
         <div className="mt-4 md:mt-0">
           {adminLoggedIn ? (
             <button
-              onClick={() => setAdminLoggedIn(false)}
+              onClick={() => {
+                localStorage.removeItem("adminToken");
+                setAdminLoggedIn(false);
+              }}
               className="text-black px-4 py-2 rounded-md hover:text-gray-600 transition cursor-pointer"
             >
               Logout
             </button>
           ) : (
             <button
-              onClick={() => setAdminModalOpen(true)}
+              onClick={() => {
+                setUsername("");
+                setPassword("");
+                setAdminModalOpen(true);
+              }}
               className="text-gray-400 px-4 py-2 rounded-md hover:text-black transition cursor-pointer"
             >
               Admin
@@ -77,10 +109,9 @@ export default function Footer() {
           )}
         </div>
       </div>
-      {/* Admin Login Modal */}
+
       <Modal isOpen={adminModalOpen} onClose={() => setAdminModalOpen(false)}>
         <div className="bg-white p-6 rounded-md w-96 relative">
-          {/* Close Button */}
           <button
             onClick={() => setAdminModalOpen(false)}
             className="absolute top-2 right-4 text-gray-600 hover:text-gray-800 text-2xl font-bold cursor-pointer"
@@ -93,19 +124,25 @@ export default function Footer() {
               <label className="block text-gray-700 mb-2">Username</label>
               <input
                 type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 className="w-full border border-gray-300 px-3 py-2 rounded-md text-black"
+                required
               />
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 mb-2">Password</label>
               <input
                 type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full border border-gray-300 px-3 py-2 rounded-md text-black"
+                required
               />
             </div>
             <button
               type="submit"
-              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+              className="!bg-blue-600 block mx-auto text-white px-8 py-2 rounded-md hover:!bg-blue-700 transition z-50 cursor-pointer"
             >
               Login
             </button>
